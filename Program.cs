@@ -5,24 +5,28 @@
 
 using System;
 using System.Security.Cryptography;
+using System.Collections.Generic;
 
 namespace testeTecnicoCommandLine
 {
     internal class Program
     {
-        //arrays que vão guardar as informações das pessoas
-        static string[] nomes = new string[10];
-        static int[] idades = new int[10];
-        static int[] ids = new int[10];
+        //listas que vão guardar as informações das pessoas
+        static List<string> nomes = new List<string>();
+        static List<int> idades = new List<int>();
+        static List<int> ids = new List<int>();
+
+        //variável para gerar um id único para cada pessoa
+        static int idsCont = 0;
         static int totalPessoas = 0;
 
-        //arrays que vão guardar as informações das transações com quantidades maiores, pois, podem várias transações por pessoa cadastrada
-        static string[] descricoes = new string[100];
-        static string[] tipos = new string[100];
-        static double[] valores = new double[100];
-        static int[] idsTransacoes = new int[100];
-        static string[] pessoaCorrespondente = new string[100];
-        static int[] idsPessoaCorrespondente = new int[100];
+        //listas que vão guardar as informações das transações com quantidades maiores, pois, podem várias transações por pessoa cadastrada
+        static List<string> descricoes = new List<string>();
+        static List<string> tipos = new List<string>();
+        static List<double> valores = new List<double>();
+        static List<int> idsTransacoes = new List<int>();
+        static List<string> pessoaCorrespondente = new List<string>();
+        static List<int> idsPessoaCorrespondente = new List<int>();
         static int totalTransacoes = 0;
         static double totalGeralDespesas = 0;
         static double totalGeralReceitas = 0;
@@ -30,51 +34,54 @@ namespace testeTecnicoCommandLine
 
         static void Main(string[] args)
         {
-            //pessoas teste
-            nomes[0] = "Samuel";
-            idades[0] = 23;
-            ids[0] = 0;
+            //inicializa já com pessoas e transações cadastradas para facilitar na hora de testar
+            //duas pessoas
+            nomes.Add("Samuel");
+            idades.Add(23);
+            ids.Add(idsCont);
             totalPessoas++;
+            idsCont++;
 
-            nomes[1] = "Melissa";
-            idades[1] = 22;
-            ids[1] = 1;
+            nomes.Add("Luna");
+            idades.Add(22);
+            ids.Add(idsCont);
             totalPessoas++;
+            idsCont++;
 
-            //transações teste
-            tipos[0] = "Receita";
-            valores[0] = 1000;
-            descricoes[0] = "Salário";
-            idsTransacoes[0] = 0;
-            pessoaCorrespondente[0] = "Samuel";
-            idsPessoaCorrespondente[0] = 0;
+            //duas transações para cada pessoa
+            tipos.Add("Receita");
+            valores.Add(1000);
+            descricoes.Add("Salário");
+            idsTransacoes.Add(0);
+            pessoaCorrespondente.Add("Samuel");
+            idsPessoaCorrespondente.Add(0);
             totalTransacoes++;
 
-            tipos[1] = "Despesa";
-            valores[1] = 100;
-            descricoes[1] = "Contas";
-            idsTransacoes[1] = 1;
-            pessoaCorrespondente[1] = "Samuel";
-            idsPessoaCorrespondente[1] = 0;
+            tipos.Add("Despesa");
+            valores.Add(100);
+            descricoes.Add("Contas");
+            idsTransacoes.Add(1);
+            pessoaCorrespondente.Add("Samuel");
+            idsPessoaCorrespondente.Add(0);
             totalTransacoes++;
 
-            tipos[2] = "Receita";
-            valores[2] = 2000;
-            descricoes[2] = "Salário";
-            idsTransacoes[2] = 2;
-            pessoaCorrespondente[2] = "Melissa";
-            idsPessoaCorrespondente[2] = 1;
+            tipos.Add("Receita");
+            valores.Add(2000);
+            descricoes.Add("Salário");
+            idsTransacoes.Add(2);
+            pessoaCorrespondente.Add("Luna");
+            idsPessoaCorrespondente.Add(1);
             totalTransacoes++;
 
-            tipos[3] = "Despesa";
-            valores[3] = 200;
-            descricoes[3] = "Contas";
-            idsTransacoes[3] = 3;
-            pessoaCorrespondente[3] = "Melissa";
-            idsPessoaCorrespondente[3] = 1;
+            tipos.Add("Despesa");
+            valores.Add(300);
+            descricoes.Add("Contas");
+            idsTransacoes.Add(3);
+            pessoaCorrespondente.Add("Luna");
+            idsPessoaCorrespondente.Add(1);
             totalTransacoes++;
 
-            /*for (int i = 0; i < totalTransacoes; i++)
+            for (int i = 0; i < totalTransacoes; i++)
             {
                 if (tipos[i] == "Receita")
                 {
@@ -86,9 +93,9 @@ namespace testeTecnicoCommandLine
                     totalGeralDespesas += valores[i];
                 }
             }
-            saldoLiquidoTotal = totalGeralReceitas - totalGeralDespesas;*/
+            saldoLiquidoTotal = totalGeralReceitas - totalGeralDespesas;
 
-            ////////////////////////////////
+            /////////////////////////////////////////////////////////////////////
 
             string op;
 
@@ -184,36 +191,21 @@ namespace testeTecnicoCommandLine
         }
         static void cadPessoa()
         {
-            //verifica se a quantidade total de pessoas cadastradas já foi atingida
-            if (totalPessoas >= 10)
-            {
-                Console.WriteLine(" \t\t Limite de pessoas atingido!");
-                Console.ReadKey();
-                return;
-            }
-
             Console.WriteLine("\n\t --- Cadastrar Pessoa --- \n\n");
 
-            //adiciona os valores digitados aos seus respectivos arrays e incrementa o contador de pessoas cadastradas
+            //adiciona os valores digitados às suas respectivas listas e atualiza o contador de pessoas 
             Console.Write("\t Nome completo: ");
-            nomes[totalPessoas] = Console.ReadLine();
+            nomes.Add(Console.ReadLine());
 
             Console.Write("\t         Idade: ");
-            idades[totalPessoas] = int.Parse(Console.ReadLine());
+            idades.Add(int.Parse(Console.ReadLine()));
 
-            if (ids[ids.Length - 1] == totalPessoas)
-            {
-                ids[totalPessoas] = totalPessoas + 1;
-            }
-            else
-            {
-                ids[totalPessoas] = totalPessoas;
-            }
+            ids.Add(idsCont);
 
-            totalPessoas++;
+            idsCont++;
+            totalPessoas = ids.Count;
 
             Console.WriteLine("\n\nPessoa cadastrada com sucesso!\n\nPressione qualquer tecla para voltar...");
-            Console.WriteLine("length = " + ids.Length + " - totalpessoas = " + totalPessoas);
             Console.ReadKey();
             limpaTela();
         }
@@ -230,8 +222,8 @@ namespace testeTecnicoCommandLine
 
             Console.WriteLine("\n\t\t --- Clientes Cadastrados --- \n\n");
 
-            //percorre os arrays para mostrar as pessoas cadastradas
-            for (int i = 0; i < totalPessoas; i++)
+            //percorre as listas para mostrar as pessoas cadastradas
+            for (int i = 0; i < ids.Count; i++)
             {
                 Console.WriteLine("\t\t\t   ID: " + ids[i]);
                 Console.WriteLine("\t\t\t Nome: " + nomes[i]);
@@ -256,23 +248,23 @@ namespace testeTecnicoCommandLine
             }
 
             //mostra as pessoas cadastradas para melhor visualização antes de deletar
-            Console.WriteLine("\n\n\t\t --- Exclusão de Pessoas ---");
+            Console.WriteLine("\n\n\t\t --- Exclusão de Pessoas ---\n");
 
-            for (int i = 0; i < totalPessoas; i++)
+            for (int i = 0; i < ids.Count; i++)
             {
                 Console.WriteLine("\t\t\t   ID: " + ids[i]);
                 Console.WriteLine("\t\t\t Nome: " + nomes[i]);
                 Console.WriteLine("\t\t-------------------------------");
             }
 
-            //solicita o id da pessoa desejada            
             Console.Write("\nDigite o ID da pessoa que deseja excluir: ");
-
-            //salva o valor na variável decrementando o id, pois, antes estava incrementado em 1 para melhor visualização
             idExc = int.Parse(Console.ReadLine());
 
+            //variavel para achar o índice certo a partir do id único da pessoa, porque o id é diferente do índice na lista
+            int index = ids.IndexOf(idExc);
+
             //verifica se o id digitado é válido
-            if (idExc < 0 || idExc > totalPessoas)
+            if (index == -1)
             {
                 Console.WriteLine("\nPessoa não existente.");
                 Console.WriteLine("\nPressione qualquer tecla para voltar...");
@@ -280,54 +272,48 @@ namespace testeTecnicoCommandLine
                 limpaTela();
                 return;
             }
+            //chama a função para excluir as transações antes da pessoa senão dá erro
+            delTransacao(index);
 
-            //percorre os arrays de pessoas e passa os elementos para uma posição anterior a partir da pessoa excluída
-            for (int i = idExc; i < totalPessoas; i++)
-            {
-                ids[i] = ids[i + 1];
-                nomes[i] = nomes[i + 1];
-                idades[i] = idades[i + 1];
+            ids.RemoveAt(index);
+            nomes.RemoveAt(index);
+            idades.RemoveAt(index);
 
-                delTransacao(idExc);
-            }
-
-            //diminui a quantidade de pessoas cadastradas
-            totalPessoas--;
+            //atualiza o contador de pessoas a partir da quantidade de ids na lista
+            totalPessoas = ids.Count;
 
             Console.WriteLine("\n\nPessoa excluída com sucesso!\nPressione qualquer tecla para voltar...");
-            Console.WriteLine("length = " + ids.Length + " - totalpessoas = " + totalPessoas);
-
             Console.ReadKey();
         }
 
         static void delTransacao(int idExc)
         {
-            int novoTotalTransacoes = 0;
-
-            for (int i = 0; i < totalTransacoes; i++)
+            //percorre a lista ao contrário porque tava dando erro tentando percorrer do começo
+            //porque a lista estava sendo alterada durante o loop e não acessava os dados certos
+            for (int i = idsTransacoes.Count - 1; i >= 0; i--)
             {
                 if (idsPessoaCorrespondente[i] == idExc)
                 {
                     if (tipos[i] == "Despesa")
                     {
-                        totalGeralDespesas -= valores[idExc];
+                        totalGeralDespesas -= valores[i];
                     }
 
                     else if (tipos[i] == "Receita")
                     {
-                        totalGeralReceitas -= valores[idExc];
+                        totalGeralReceitas -= valores[i];
                     }
 
-                    descricoes[novoTotalTransacoes] = descricoes[i];
-                    tipos[novoTotalTransacoes] = tipos[i];
-                    valores[novoTotalTransacoes] = valores[i];
-                    idsTransacoes[novoTotalTransacoes] = idsTransacoes[i];
-                    pessoaCorrespondente[novoTotalTransacoes] = pessoaCorrespondente[i];
-                    idsPessoaCorrespondente[novoTotalTransacoes] = idsPessoaCorrespondente[i];
-
-                    novoTotalTransacoes++;
+                    descricoes.RemoveAt(i);
+                    tipos.RemoveAt(i);
+                    valores.RemoveAt(i);
+                    idsTransacoes.RemoveAt(i);
+                    pessoaCorrespondente.RemoveAt(i);
+                    idsPessoaCorrespondente.RemoveAt(i);
                 }
             }
+            //atualiza o contador de transações a partir da quantidade de ids na lista
+            totalTransacoes = idsTransacoes.Count;
         }
 
         static void menuTransacoes()
@@ -339,7 +325,6 @@ namespace testeTecnicoCommandLine
             {
                 limpaTela();
 
-                //menu transações
                 Console.WriteLine("\n\t --- Transações --- \n\n");
 
                 Console.WriteLine(" 1 - Cadastrar");
@@ -378,7 +363,7 @@ namespace testeTecnicoCommandLine
 
             Console.WriteLine("\n\t --- Cadastrar Transação --- \n\n");
 
-            //verifica se existem pessoas cadastradas para criar uma transação
+            //verifica se tem pessoas cadastradas para criar uma transação
             if (totalPessoas <= 0)
             {
                 Console.WriteLine("Nenhuma pessoa no sistema para cadastrar uma transação.\nPressione qualquer tecla para voltar...");
@@ -394,32 +379,41 @@ namespace testeTecnicoCommandLine
                 Console.WriteLine("\t-------------------------------");
             }
             Console.Write("\nDigite o ID da pessoa que deseja cadastrar uma transação: ");
-            //diminui em 1, pois, antes estava aumentado para melhor visualização
             id = int.Parse(Console.ReadLine());
 
-            limpaTela();
-            Console.WriteLine("\n\t --- Cadastrar Transação --- \n\n");
-            Console.WriteLine("\n Pessoa selecionada: " + nomes[id]);
+            //variavel para achar o índice certo a partir do id único da pessoa
+            int index = ids.IndexOf(id);
 
-            //copia o nome e id da pessoa para os arrays de correspondencia
-            pessoaCorrespondente[totalTransacoes] = nomes[id];
-            idsPessoaCorrespondente[totalTransacoes] = ids[id];
-
-            idsTransacoes[totalTransacoes] = totalTransacoes;
-
-            if (idades[id] >= 18)
+            if (index == -1)
             {
-                maior18();
+                Console.WriteLine("\nID não encontrado! Pressione qualquer tecla para voltar...");
+                Console.ReadKey();
+                return;
+            }
+
+            limpaTela();
+
+            Console.WriteLine("\n\t --- Cadastrar Transação --- \n\n");
+            Console.WriteLine("\n Pessoa selecionada: " + nomes[index]);
+
+            //copia o nome e id da pessoa para os arrays correspondentes
+            pessoaCorrespondente.Add(nomes[index]);
+            idsPessoaCorrespondente.Add(ids[index]);
+
+            idsTransacoes.Add(totalTransacoes);
+
+            if (idades[index] >= 18)
+            {
+                maior18(index);
             }
             else
             {
-                menor18();
+                menor18(index);
             }
-
         }
 
         //deixa a pessoa escolher se vai cadastrar uma receita ou despesa
-        static void maior18()
+        static void maior18(int index)
         {
             string tipo;
 
@@ -429,24 +423,24 @@ namespace testeTecnicoCommandLine
             tipo = Console.ReadLine();
 
             Console.Write("\n Valor da transação: ");
-            valores[totalTransacoes] = double.Parse(Console.ReadLine());
+            valores.Add(double.Parse(Console.ReadLine()));
 
             //adiciona os valores às variáveis de totais gerais para serem exibidos na tela de consulta totais
             if (tipo == "1")
             {
-                tipos[totalTransacoes] = "Despesa";
-                totalGeralDespesas += valores[totalTransacoes];
+                tipos.Add("Despesa");
+                totalGeralDespesas += valores[index];
             }
             if (tipo == "2")
             {
-                tipos[totalTransacoes] = "Receita";
-                totalGeralReceitas += valores[totalTransacoes];
+                tipos.Add("Receita");
+                totalGeralReceitas += valores[index];
             }
 
             Console.Write("\n Descrição da transação: ");
-            descricoes[totalTransacoes] = Console.ReadLine();
+            descricoes.Add(Console.ReadLine());
 
-            totalTransacoes++;
+            totalTransacoes = idsTransacoes.Count;
 
             Console.WriteLine("\nTransação cadastrada com sucesso!\nPressione qualquer tecla para voltar...");
             Console.ReadKey();
@@ -454,19 +448,19 @@ namespace testeTecnicoCommandLine
         }
 
         //cadastra apenas despesas
-        static void menor18()
+        static void menor18(int index)
         {
-            tipos[totalTransacoes] = "Despesa";
+            tipos.Add("Despesa");
 
             Console.Write("\n Valor da transação: ");
-            valores[totalTransacoes] = double.Parse(Console.ReadLine());
+            valores.Add(double.Parse(Console.ReadLine()));
 
-            totalGeralDespesas += valores[totalTransacoes];
+            totalGeralDespesas += valores[index];
 
             Console.Write("\n Descrição da transação: ");
-            descricoes[totalTransacoes] = Console.ReadLine();
+            descricoes.Add(Console.ReadLine());
 
-            totalTransacoes++;
+            totalTransacoes = idsTransacoes.Count;
 
             Console.WriteLine("\nTransação cadastrada com sucesso!\nPressione qualquer tecla para voltar...");
             Console.ReadKey();
@@ -475,10 +469,9 @@ namespace testeTecnicoCommandLine
 
         static void listaTransacao()
         {
-            bool pessoaExiste = false;
-
             Console.WriteLine("\n\t\t --- Transações Cadastradas --- \n\n");
-            //verifica se existem transações cadastradas
+
+            //verifica se tem transações cadastradas
             if (totalTransacoes == 0)
             {
                 Console.WriteLine("\nNenhuma transação cadastrada!\nPressione qualquer tecla para voltar...");
@@ -486,26 +479,8 @@ namespace testeTecnicoCommandLine
                 return;
             }
 
-            for (int i = 0; i < totalTransacoes; i++)
+            for (int i = 0; i < idsTransacoes.Count; i++)
             {
-                // Verifica se a pessoa ainda existe
-                pessoaExiste = false;
-
-                for (int j = 0; j < totalPessoas; j++)
-                {
-                    if (idsPessoaCorrespondente[i] == ids[j])
-                    {
-                        pessoaExiste = true;
-                        break;
-                    }
-                }
-
-                // Se a pessoa foi excluída, não exibe a transação
-                if (!pessoaExiste)
-                {
-                    continue;
-                }
-
                 Console.WriteLine("\t\t   ID da transação: " + idsTransacoes[i]);
                 Console.WriteLine("\t\t ID do responsável: " + idsPessoaCorrespondente[i]);
                 Console.WriteLine("\t\t       Responsável: " + pessoaCorrespondente[i]);
@@ -521,27 +496,34 @@ namespace testeTecnicoCommandLine
 
         static void consultaTotais()
         {
+            //verificador de transações
             bool temTransacoes = false;
 
+            //variaveis para calcular os totais parcialmente
             double totalReceitas = 0;
             double totalDespesas = 0;
             int qtdTransacoes = 0;
             int qtdReceitas = 0;
             int qtdDespesas = 0;
 
+            //variáveis que vão calcular os totais gerais a partir dos parciais
             totalGeralReceitas = 0;
             totalGeralDespesas = 0;
             saldoLiquidoTotal = 0;
 
             //loop externo para percorrer todas as pessoas cadastradas
-            for (int i = 0; i < totalPessoas; i++)
+            for (int i = 0; i < ids.Count; i++)
             {
+                //guarda o indice certo na lista já que o id único pode ser diferente da sua posição
+                int idPessoa = ids[i];
+
+                //atualiza o verificador sempre que estiver acessando outra pessoa
                 temTransacoes = false;
 
-                //verifica se a pessoa tem transações associadas
-                for (int j = 0; j < totalTransacoes; j++)
+                //loop interno apenas para ver se a pessoa tem transações cadastradas
+                for (int j = 0; j < idsPessoaCorrespondente.Count; j++)
                 {
-                    if (idsPessoaCorrespondente[j] == ids[i])
+                    if (idsPessoaCorrespondente[j] == idPessoa)
                     {
                         temTransacoes = true;
                         break;
@@ -553,40 +535,40 @@ namespace testeTecnicoCommandLine
                     continue;
                 }
 
-                //as variáveis zeram toda vez que o loop passa por outra pessoa
+                //as variáveis zeram toda vez que o loop passa por outra pessoa para calcular as parciais de cada uma
                 totalReceitas = 0;
                 totalDespesas = 0;
                 qtdTransacoes = 0;
                 qtdReceitas = 0;
                 qtdDespesas = 0;
 
-                //loop interno para percorrer todas as transações de cada pessoa
+                //outro loop interno, dessa vez para percorrer todas as transações de cada pessoa
                 for (int j = 0; j < totalTransacoes; j++)
                 {
-                    if (idsPessoaCorrespondente[j] == ids[i])
+                    if (idsPessoaCorrespondente[j] == idPessoa)
                     {
                         if (tipos[j] == "Receita")
                         {
                             totalReceitas += valores[j];
-                            qtdTransacoes++;
                             qtdReceitas++;
                         }
-                        if (tipos[j] == "Despesa")
+                        else if (tipos[j] == "Despesa")
                         {
                             totalDespesas += valores[j];
-                            qtdTransacoes++;
                             qtdDespesas++;
                         }
+                        qtdTransacoes++;
                     }
                 }
                 //calcula o saldo líquido de cada pessoa
                 double saldoLiquido = totalReceitas - totalDespesas;
 
+                //soma os totais parcias nas variáveis de totais gerais para serem exibidos no final
                 totalGeralReceitas += totalReceitas;
                 totalGeralDespesas += totalDespesas;
                 saldoLiquidoTotal += saldoLiquido;
 
-                //mostra os dados antes que as variáveis sejam zeradas para calcular os totais de outra pessoa
+                //mostra os dados da pessoa atual antes que as variáveis sejam zeradas para calcular os totais de outra pessoa
                 Console.WriteLine("             Pessoa: " + nomes[i]);
                 Console.WriteLine("                 ID: " + ids[i]);
                 Console.WriteLine("         Transações: " + qtdTransacoes);
@@ -596,12 +578,9 @@ namespace testeTecnicoCommandLine
                 Console.WriteLine(" Total das Despesas: R$ " + totalDespesas);
                 Console.WriteLine("      Saldo Líquido: R$ " + saldoLiquido);
                 Console.WriteLine("--------------------------------------------------");
-
-
             }
 
-
-
+            //totais finais
             Console.WriteLine("\n\n\t --- Total Geral --- \n");
             Console.WriteLine("   Total das receitas: R$ " + totalGeralReceitas);
             Console.WriteLine("   Total das despesas: R$ " + totalGeralDespesas);
@@ -611,6 +590,7 @@ namespace testeTecnicoCommandLine
             Console.ReadKey();
         }
 
+        //não é exatamente necessário mas gosto de fazer isso pro código ficar mais fácil de ler
         static void limpaTela()
         {
             Console.Clear();
